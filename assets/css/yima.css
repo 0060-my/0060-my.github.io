@@ -55,6 +55,8 @@
     --color-violet-600: oklch(54.1% 0.281 293.009);
     --color-purple-50: oklch(97.7% 0.014 308.299);
     --color-purple-100: oklch(94.6% 0.033 307.174);
+    --color-purple-400: oklch(71.4% 0.203 305.504);
+    --color-purple-500: oklch(62.7% 0.265 303.9);
     --color-purple-600: oklch(55.8% 0.288 302.321);
     --color-pink-100: oklch(94.8% 0.028 342.258);
     --color-pink-600: oklch(59.2% 0.249 0.584);
@@ -1776,10 +1778,31 @@
       }
     }
   }
+  .group-hover\:text-green-600 {
+    &:is(:where(.group):hover *) {
+      @media (hover: hover) {
+        color: var(--color-green-600);
+      }
+    }
+  }
   .group-hover\:text-primary {
     &:is(:where(.group):hover *) {
       @media (hover: hover) {
         color: #0060ff;
+      }
+    }
+  }
+  .group-hover\:text-purple-500 {
+    &:is(:where(.group):hover *) {
+      @media (hover: hover) {
+        color: var(--color-purple-500);
+      }
+    }
+  }
+  .group-hover\:text-purple-600 {
+    &:is(:where(.group):hover *) {
+      @media (hover: hover) {
+        color: var(--color-purple-600);
       }
     }
   }
@@ -1909,6 +1932,13 @@
     &:hover {
       @media (hover: hover) {
         border-color: #0060ff;
+      }
+    }
+  }
+  .hover\:border-purple-400 {
+    &:hover {
+      @media (hover: hover) {
+        border-color: var(--color-purple-400);
       }
     }
   }
@@ -2517,6 +2547,8 @@
     padding: 0.6em 0.75em;
     border: 1px solid #E5E7EB;
     vertical-align: top;
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
   .prose tr:last-child td {
     border-bottom: none;
