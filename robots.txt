@@ -1,5 +1,0 @@
-User-agent: *
-Disallow: /search/
-Disallow: /submit/
-
-Sitemap: https://0060.my/sitemap.xml
