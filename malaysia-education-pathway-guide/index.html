@@ -195,8 +195,8 @@
               },
               "description": "马来西亚留学一年要花多少钱？公立大学 (UM) 与私立大学 (Taylor's) 怎么选？什么是 3+0 双联课程？本文深度解析从 K-12 国际学校到大学硕博的全龄段教育体系，涵盖学费预算、入学门槛及陪读签证政策。"
               ,
-                "datePublished": "2026-02-17T21:21:34%z",
-                "dateModified": "2026-02-17T21:21:34%z"
+                "datePublished": "2026-02-18T09:00:11%z",
+                "dateModified": "2026-02-18T09:00:11%z"
                 
             }
             ,
@@ -559,7 +559,7 @@
                             <span>小易</span>
                         </div>
                         <span>•</span>
-                        <span>更新于 2026-02-17</span>
+                        <span>更新于 2026-02-18</span>
                     </div>
         
                     <!-- Social Share -->
@@ -788,7 +788,135 @@
                                     
                                     
                                     
-                            
+                                    
+                                    <script>
+                                      const initExchangeWidgets = () => {
+                                                const headers = Array.from(document.querySelectorAll('h5'));
+                                                const cards = headers
+                                                    .filter((h) => (h.textContent || '').trim() === '汇率计算器')
+                                                    .map((h) => h.closest('div'))
+                                                    .filter(Boolean);
+                                    
+                                                if (cards.length === 0) return;
+                                    
+                                                const storageKey = 'fx:MYR:CNY';
+                                                const ttlMs = 6 * 60 * 60 * 1000;
+                                    
+                                                const readCache = () => {
+                                                    try {
+                                                        const raw = localStorage.getItem(storageKey);
+                                                        if (!raw) return null;
+                                                        const data = JSON.parse(raw);
+                                                        if (!data || typeof data.rate !== 'number' || typeof data.fetchedAt !== 'number') return null;
+                                                        return data;
+                                                    } catch {
+                                                        return null;
+                                                    }
+                                                };
+                                    
+                                                const writeCache = (rate) => {
+                                                    try {
+                                                        localStorage.setItem(storageKey, JSON.stringify({ rate, fetchedAt: Date.now() }));
+                                                    } catch {}
+                                                };
+                                    
+                                                const fetchRate = async () => {
+                                                    const cached = readCache();
+                                                    if (cached && (Date.now() - cached.fetchedAt) <= ttlMs) return { rate: cached.rate, cached: true, stale: false, ageMs: Date.now() - cached.fetchedAt };
+                                    
+                                                    const controller = new AbortController();
+                                                    const t = setTimeout(() => controller.abort(), 6000);
+                                                    try {
+                                                        const res = await fetch('https://api.exchangerate-api.com/v4/latest/MYR', { signal: controller.signal });
+                                                        if (!res.ok) throw new Error('rate fetch failed');
+                                                        const data = await res.json();
+                                                        const rate = data && data.rates ? Number(data.rates.CNY) : NaN;
+                                                        if (!Number.isFinite(rate) || rate <= 0) throw new Error('rate invalid');
+                                                        writeCache(rate);
+                                                        return { rate, cached: false, stale: false, ageMs: 0 };
+                                                    } catch (e) {
+                                                        if (cached) return { rate: cached.rate, cached: true, stale: true, ageMs: Date.now() - cached.fetchedAt };
+                                                        throw e;
+                                                    } finally {
+                                                        clearTimeout(t);
+                                                    }
+                                                };
+                                    
+                                                const ensureResultEl = (card) => {
+                                                    let el = card.querySelector('[data-role="fx-result"]');
+                                                    if (el) return el;
+                                                    el = document.createElement('p');
+                                                    el.setAttribute('data-role', 'fx-result');
+                                                    el.className = 'text-xs text-gray-600 mt-2';
+                                                    el.textContent = '';
+                                                    const btn = Array.from(card.querySelectorAll('button')).find((b) => (b.textContent || '').trim() === '计算');
+                                                    if (btn && btn.parentElement) btn.insertAdjacentElement('afterend', el);
+                                                    else card.appendChild(el);
+                                                    return el;
+                                                };
+                                    
+                                                cards.forEach((card) => {
+                                                    const rateEl = card.querySelector('p');
+                                                    const input = card.querySelector('input[type="number"]');
+                                                    const btn = Array.from(card.querySelectorAll('button')).find((b) => (b.textContent || '').trim() === '计算');
+                                                    if (!rateEl || !input || !btn) return;
+                                    
+                                                    const resultEl = ensureResultEl(card);
+                                    
+                                                    const renderRateText = (rateInfo) => {
+                                                        const rateStr = rateInfo.rate.toFixed(4);
+                                                        const suffix = rateInfo.stale ? '（缓存）' : '';
+                                                        rateEl.textContent = `今日汇率: 1 MYR ≈ ${rateStr} CNY${suffix}`;
+                                                    };
+                                    
+                                                    const renderResult = (rateInfo) => {
+                                                        const myr = Number(input.value);
+                                                        if (!Number.isFinite(myr) || myr < 0) {
+                                                            resultEl.textContent = '';
+                                                            return;
+                                                        }
+                                                        const cny = (myr * rateInfo.rate).toFixed(2);
+                                                        resultEl.textContent = `≈ ${cny} CNY`;
+                                                    };
+                                    
+                                                    let latest = null;
+                                    
+                                                    const withRate = async () => {
+                                                        if (latest) return latest;
+                                                        rateEl.textContent = '正在更新汇率...';
+                                                        btn.disabled = true;
+                                                        try {
+                                                            latest = await fetchRate();
+                                                            renderRateText(latest);
+                                                            return latest;
+                                                        } catch {
+                                                            rateEl.textContent = '汇率获取失败，请稍后重试';
+                                                            throw new Error('rate_unavailable');
+                                                        } finally {
+                                                            btn.disabled = false;
+                                                        }
+                                                    };
+                                    
+                                                    const calcNow = async () => {
+                                                        try {
+                                                            const rateInfo = await withRate();
+                                                            renderResult(rateInfo);
+                                                        } catch {}
+                                                    };
+                                    
+                                                    btn.addEventListener('click', calcNow);
+                                    
+                                                    let timer = null;
+                                                    input.addEventListener('input', () => {
+                                                        if (timer) clearTimeout(timer);
+                                                        timer = setTimeout(calcNow, 200);
+                                                    });
+                                    
+                                                    calcNow();
+                                                });
+                                            };
+                                            document.addEventListener('DOMContentLoaded', initExchangeWidgets);
+                                    </script>
                                                     </div>
                                                 
                                         
@@ -859,7 +987,135 @@
                                   <button class="w-full bg-gray-900 text-white text-xs py-2 rounded">计算</button>
                                   </div>
                                 
-                            
+                                
+                                <script>
+                                  const initExchangeWidgets = () => {
+                                            const headers = Array.from(document.querySelectorAll('h5'));
+                                            const cards = headers
+                                                .filter((h) => (h.textContent || '').trim() === '汇率计算器')
+                                                .map((h) => h.closest('div'))
+                                                .filter(Boolean);
+                                
+                                            if (cards.length === 0) return;
+                                
+                                            const storageKey = 'fx:MYR:CNY';
+                                            const ttlMs = 6 * 60 * 60 * 1000;
+                                
+                                            const readCache = () => {
+                                                try {
+                                                    const raw = localStorage.getItem(storageKey);
+                                                    if (!raw) return null;
+                                                    const data = JSON.parse(raw);
+                                                    if (!data || typeof data.rate !== 'number' || typeof data.fetchedAt !== 'number') return null;
+                                                    return data;
+                                                } catch {
+                                                    return null;
+                                                }
+                                            };
+                                
+                                            const writeCache = (rate) => {
+                                                try {
+                                                    localStorage.setItem(storageKey, JSON.stringify({ rate, fetchedAt: Date.now() }));
+                                                } catch {}
+                                            };
+                                
+                                            const fetchRate = async () => {
+                                                const cached = readCache();
+                                                if (cached && (Date.now() - cached.fetchedAt) <= ttlMs) return { rate: cached.rate, cached: true, stale: false, ageMs: Date.now() - cached.fetchedAt };
+                                
+                                                const controller = new AbortController();
+                                                const t = setTimeout(() => controller.abort(), 6000);
+                                                try {
+                                                    const res = await fetch('https://api.exchangerate-api.com/v4/latest/MYR', { signal: controller.signal });
+                                                    if (!res.ok) throw new Error('rate fetch failed');
+                                                    const data = await res.json();
+                                                    const rate = data && data.rates ? Number(data.rates.CNY) : NaN;
+                                                    if (!Number.isFinite(rate) || rate <= 0) throw new Error('rate invalid');
+                                                    writeCache(rate);
+                                                    return { rate, cached: false, stale: false, ageMs: 0 };
+                                                } catch (e) {
+                                                    if (cached) return { rate: cached.rate, cached: true, stale: true, ageMs: Date.now() - cached.fetchedAt };
+                                                    throw e;
+                                                } finally {
+                                                    clearTimeout(t);
+                                                }
+                                            };
+                                
+                                            const ensureResultEl = (card) => {
+                                                let el = card.querySelector('[data-role="fx-result"]');
+                                                if (el) return el;
+                                                el = document.createElement('p');
+                                                el.setAttribute('data-role', 'fx-result');
+                                                el.className = 'text-xs text-gray-600 mt-2';
+                                                el.textContent = '';
+                                                const btn = Array.from(card.querySelectorAll('button')).find((b) => (b.textContent || '').trim() === '计算');
+                                                if (btn && btn.parentElement) btn.insertAdjacentElement('afterend', el);
+                                                else card.appendChild(el);
+                                                return el;
+                                            };
+                                
+                                            cards.forEach((card) => {
+                                                const rateEl = card.querySelector('p');
+                                                const input = card.querySelector('input[type="number"]');
+                                                const btn = Array.from(card.querySelectorAll('button')).find((b) => (b.textContent || '').trim() === '计算');
+                                                if (!rateEl || !input || !btn) return;
+                                
+                                                const resultEl = ensureResultEl(card);
+                                
+                                                const renderRateText = (rateInfo) => {
+                                                    const rateStr = rateInfo.rate.toFixed(4);
+                                                    const suffix = rateInfo.stale ? '（缓存）' : '';
+                                                    rateEl.textContent = `今日汇率: 1 MYR ≈ ${rateStr} CNY${suffix}`;
+                                                };
+                                
+                                                const renderResult = (rateInfo) => {
+                                                    const myr = Number(input.value);
+                                                    if (!Number.isFinite(myr) || myr < 0) {
+                                                        resultEl.textContent = '';
+                                                        return;
+                                                    }
+                                                    const cny = (myr * rateInfo.rate).toFixed(2);
+                                                    resultEl.textContent = `≈ ${cny} CNY`;
+                                                };
+                                
+                                                let latest = null;
+                                
+                                                const withRate = async () => {
+                                                    if (latest) return latest;
+                                                    rateEl.textContent = '正在更新汇率...';
+                                                    btn.disabled = true;
+                                                    try {
+                                                        latest = await fetchRate();
+                                                        renderRateText(latest);
+                                                        return latest;
+                                                    } catch {
+                                                        rateEl.textContent = '汇率获取失败，请稍后重试';
+                                                        throw new Error('rate_unavailable');
+                                                    } finally {
+                                                        btn.disabled = false;
+                                                    }
+                                                };
+                                
+                                                const calcNow = async () => {
+                                                    try {
+                                                        const rateInfo = await withRate();
+                                                        renderResult(rateInfo);
+                                                    } catch {}
+                                                };
+                                
+                                                btn.addEventListener('click', calcNow);
+                                
+                                                let timer = null;
+                                                input.addEventListener('input', () => {
+                                                    if (timer) clearTimeout(timer);
+                                                    timer = setTimeout(calcNow, 200);
+                                                });
+                                
+                                                calcNow();
+                                            });
+                                        };
+                                        document.addEventListener('DOMContentLoaded', initExchangeWidgets);
+                                </script>
                                                 
                                         
                     </div>

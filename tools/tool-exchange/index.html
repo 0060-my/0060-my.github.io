@@ -101,18 +101,18 @@
     <meta property="og:title" content="实用工具-汇率换算器">
     <meta property="og:description" content="实时查询马币(MYR)兑人民币(CNY)、美元(USD)汇率。提供今日最新银行中间价，马来西亚旅游、留学、投资必备换算工具。">
     <meta property="og:url" content="https://0060.my/tools/tool-exchange/">
-    <meta property="og:image" content="https://0060.my//assets/imgs/cropped-1762933686-favicon-1-270x270.png">
+    <meta property="og:image" content="https://0060.my//assets/uploads/5076f65ad6540846.png">
     <meta property="og:image:alt" content="实用工具-汇率换算器">
     
     
     
-    <meta property="og:image:width" content="270">
-    <meta property="og:image:height" content="270">
+    
+    
     
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="实用工具-汇率换算器">
     <meta name="twitter:description" content="实时查询马币(MYR)兑人民币(CNY)、美元(USD)汇率。提供今日最新银行中间价，马来西亚旅游、留学、投资必备换算工具。">
-    <meta name="twitter:image" content="https://0060.my//assets/imgs/cropped-1762933686-favicon-1-270x270.png">
+    <meta name="twitter:image" content="https://0060.my//assets/uploads/5076f65ad6540846.png">
     
     
     
@@ -168,15 +168,15 @@
               },
               "description": "实时查询马币(MYR)兑人民币(CNY)、美元(USD)汇率。提供今日最新银行中间价，马来西亚旅游、留学、投资必备换算工具。"
               ,
-                "datePublished": "2026-02-17T21:21:46%z",
-                "dateModified": "2026-02-17T21:21:46%z"
+                "datePublished": "2026-02-18T09:00:17%z",
+                "dateModified": "2026-02-18T09:00:17%z"
                 
             }
             ,
             {
               "@type": "ImageObject",
               "@id": "https://0060.my/tools/tool-exchange/#primaryimage",
-              "url": "https://0060.my//assets/imgs/cropped-1762933686-favicon-1-270x270.png"
+              "url": "https://0060.my//assets/uploads/5076f65ad6540846.png"
             }
             
         
@@ -475,10 +475,15 @@
                 display: flex;
                 gap: 10px;
             }
+            .currency-row > * {
+                min-width: 0;
+                max-width: 100%;
+            }
         
             /* 输入框与下拉框样式 */
             input[type="number"] {
-                flex: 2;
+                flex: 2 1 0;
+                width: 100%;
                 padding: 15px;
                 border: 1px solid #e0e0e0;
                 border-radius: 12px;
@@ -492,7 +497,8 @@
             }
         
             select {
-                flex: 1;
+                flex: 1 1 0;
+                width: 100%;
                 padding: 10px;
                 border: 1px solid #e0e0e0;
                 border-radius: 12px;
@@ -500,6 +506,9 @@
                 background-color: #f9f9f9;
                 cursor: pointer;
                 font-weight: 600;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
             }
         
             /* 交换按钮 */
@@ -555,6 +564,7 @@
             @media (max-width: 480px) {
                 .converter-card { padding: 25px; }
                 .final-amount { font-size: 28px; }
+                .currency-row { flex-direction: column; }
             }
         </style>
         
@@ -733,6 +743,7 @@
             // 初始化运行一次
             calculate();
         </script>
+
     </main>
 
     <!-- 底部 -->

@@ -105,20 +105,20 @@
     • HR 算的工资对不对？
     • LHDN 官网的计算器太复杂且全是马来文/英文。">
     <meta property="og:url" content="https://0060.my/tools/tool-salary/">
-    <meta property="og:image" content="https://0060.my//assets/imgs/cropped-1762933686-favicon-1-270x270.png">
+    <meta property="og:image" content="https://0060.my//assets/uploads/b9328d0993d1e40b.png">
     <meta property="og:image:alt" content="实用工具-PCB (工资/个税) 计算器">
     
     
     
-    <meta property="og:image:width" content="270">
-    <meta property="og:image:height" content="270">
+    
+    
     
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="实用工具-PCB (工资/个税) 计算器">
     <meta name="twitter:description" content="2026最新马来西亚工资计算器。输入月薪，一键计算 EPF、SOCSO、EIS 扣除额及 PCB 预扣税，精准算出实际到手工资。 • 刚拿到 Offer 的人想知道：“月薪 10,000，扣完 EPF/SOCSO/EIS 和税， 实际到手 多少？”
     • HR 算的工资对不对？
     • LHDN 官网的计算器太复杂且全是马来文/英文。">
-    <meta name="twitter:image" content="https://0060.my//assets/imgs/cropped-1762933686-favicon-1-270x270.png">
+    <meta name="twitter:image" content="https://0060.my//assets/uploads/b9328d0993d1e40b.png">
     
     
     
@@ -176,15 +176,15 @@
     • HR 算的工资对不对？
     • LHDN 官网的计算器太复杂且全是马来文/英文。"
               ,
-                "datePublished": "2026-02-17T21:21:46%z",
-                "dateModified": "2026-02-17T21:21:46%z"
+                "datePublished": "2026-02-18T09:00:17%z",
+                "dateModified": "2026-02-18T09:00:17%z"
                 
             }
             ,
             {
               "@type": "ImageObject",
               "@id": "https://0060.my/tools/tool-salary/#primaryimage",
-              "url": "https://0060.my//assets/imgs/cropped-1762933686-favicon-1-270x270.png"
+              "url": "https://0060.my//assets/uploads/b9328d0993d1e40b.png"
             }
             
         
@@ -442,152 +442,595 @@
     <main class="flex-1">
         
         <style>
-            .tool-box { max-width: 600px; margin: 40px auto; padding: 30px; background: #fff; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
-            .tool-title { text-align: center; margin-bottom: 25px; font-weight: 800; color: #1e293b; }
-            
-            .form-group { margin-bottom: 20px; }
-            .form-label { display: block; margin-bottom: 8px; font-weight: 600; color: #475569; }
-            .form-input { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 16px; }
-            .form-select { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 16px; background: #fff; }
-            
-            .calc-btn { width: 100%; padding: 14px; background: #0060df; color: #fff; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+            /* --- 布局样式 (保持不变) --- */
+            .tool-container { max-width: 1100px; margin: 40px auto; padding: 0 20px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+            .calc-header { text-align: center; margin-bottom: 30px; }
+            .calc-title { font-size: 28px; font-weight: 800; color: #1e293b; margin-bottom: 8px; }
+            .calc-subtitle { color: #64748b; font-size: 14px; }
+            .calc-wrapper { display: grid; grid-template-columns: 1.4fr 1fr; gap: 25px; align-items: start; }
+            .input-panel { background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; overflow: hidden; }
+            .group-header { background: #f8fafc; padding: 12px 20px; font-size: 14px; font-weight: 700; color: #334155; border-bottom: 1px solid #e2e8f0; border-top: 1px solid #e2e8f0; display: flex; align-items: center; gap: 8px; }
+            .group-header:first-child { border-top: none; }
+            .group-body { padding: 20px; }
+            .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+            .form-row { margin-bottom: 15px; }
+            .label { display: block; font-size: 13px; color: #475569; font-weight: 600; margin-bottom: 6px; }
+            .sub-label { font-size: 11px; color: #94a3b8; display: block; margin-top:2px; }
+            .input-group { position: relative; display: flex; align-items: center; }
+            .prefix { position: absolute; left: 12px; color: #94a3b8; font-size: 13px; z-index: 2; }
+            .form-input { width: 100%; padding: 10px 12px 10px 35px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; text-align: right; outline: none; transition: 0.2s; font-family: monospace; font-weight: 600; }
+            .form-input:focus { border-color: #0060df; }
+            .form-select { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 13px; background: #fff; cursor: pointer; color: #334155; }
+            .result-panel { position: sticky; top: 20px; background: #1e293b; color: #fff; border-radius: 12px; padding: 25px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+            .net-label { font-size: 12px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
+            .net-value { font-size: 38px; font-weight: 800; color: #4ade80; font-family: monospace; margin: 5px 0 20px; }
+            .res-table { width: 100%; font-size: 13px; border-collapse: collapse; }
+            .res-table td { padding: 8px 0; border-bottom: 1px dashed rgba(255,255,255,0.1); color: #e2e8f0; }
+            .res-table .val { text-align: right; font-family: monospace; font-weight: 600; }
+            .text-red { color: #f87171; }
+            .calc-btn { width: 100%; padding: 14px; background: #0060df; color: #fff; border: none; border-radius: 8px; font-size: 16px; font-weight: 700; margin-top: 20px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,96,223,0.2); transition: 0.2s; }
             .calc-btn:hover { background: #0056c7; }
-        
-            .result-area { margin-top: 30px; padding-top: 20px; border-top: 2px dashed #e2e8f0; display: none; }
-            .result-row { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 15px; color: #64748b; }
-            .result-row.highlight { color: #0f172a; font-weight: 700; font-size: 18px; margin-top: 15px; padding-top: 15px; border-top: 1px solid #eee; }
-            .amount { font-family: monospace; }
-            .green { color: #10b981; }
-            .red { color: #ef4444; }
+            @media (max-width: 900px) { .calc-wrapper { grid-template-columns: 1fr; } .result-panel { order: -1; } }
         </style>
         
-        <div class="tool-box">
-            <h1 class="tool-title">🇲🇾 马来西亚薪资计算器 (2026版)</h1>
-            <p style="text-align:center; color:#666; font-size:14px; margin-bottom:20px;">
-                自动计算 EPF, SOCSO, EIS 及 PCB 预扣税，一键算出净到手工资。
-            </p>
-        
-            <div class="form-group">
-                <label class="form-label">月薪 (Gross Salary) RM</label>
-                <input type="number" id="salary" class="form-input" placeholder="例如: 5000">
+        <div class="tool-container">
+            <div class="calc-header">
+                <h1 class="calc-title">🇲🇾 薪资计算器 (2026 Payroll.my 对齐版)</h1>
+                <p class="calc-subtitle">PCB, EPF, SOCSO & EIS Calculator | 对齐 payroll.my 口径</p>
             </div>
         
-            <div class="form-group">
-                <label class="form-label">居民身份</label>
-                <select id="residency" class="form-select">
-                    <option value="resident">税务居民 (居住>182天)</option>
-                    <option value="non-resident">非税务居民 (居住<182天, 税率30%)</option>
-                </select>
-            </div>
+            <div class="calc-wrapper">
+                <!-- 左侧输入 -->
+                <div class="input-panel">
+                    
+                    <!-- 1. 收入 -->
+                    <div class="group-header">💰 Earnings (月度收入)</div>
+                    <div class="group-body">
+                        <div class="form-grid">
+                            <div class="form-row"><label class="label">Basic Salary</label><div class="input-group"><span class="prefix">RM</span><input type="number" id="wages" class="form-input" value="6000"></div></div>
+                            <div class="form-row"><label class="label">Fixed Allowance</label><div class="input-group"><span class="prefix">RM</span><input type="number" id="allowance" class="form-input" placeholder="0"></div></div>
+                            <div class="form-row"><label class="label">Overtime</label><div class="input-group"><span class="prefix">RM</span><input type="number" id="overtime" class="form-input" placeholder="0"></div></div>
+                            <div class="form-row"><label class="label">Commission</label><div class="input-group"><span class="prefix">RM</span><input type="number" id="commission" class="form-input" placeholder="0"></div></div>
+                            <div class="form-row"><label class="label">Bonus</label><div class="input-group"><span class="prefix">RM</span><input type="number" id="bonus" class="form-input" placeholder="0"></div></div>
+                            <div class="form-row"><label class="label">BIK / VOLA <span style="font-weight:normal;color:#999;font-size:11px;">(Tax only)</span></label><div class="input-group"><span class="prefix">RM</span><input type="number" id="bik" class="form-input" placeholder="0"></div></div>
+                        </div>
+                    </div>
         
-            <div class="form-group">
-                <label class="form-label">EPF 公积金缴纳率 (员工部分)</label>
-                <select id="epf-rate" class="form-select">
-                    <option value="0.11">11% (标准)</option>
-                    <option value="0.09">9% (临时政策)</option>
-                    <option value="0">0% (外籍人士不强制)</option>
-                </select>
-            </div>
+                    <!-- 2. EPF -->
+                    <div class="group-header">🏦 EPF Contribution</div>
+                    <div class="group-body">
+                        <div class="form-grid">
+                            <div class="form-row">
+                                <label class="label">EPF Status</label>
+                                <select id="epf_status" class="form-select">
+                                    <option value="1" selected>Applicable</option>
+                                    <option value="0">Not Applicable</option>
+                                </select>
+                            </div>
+                            <div class="form-row">
+                                <label class="label">Employee Age</label>
+                                <select id="epf_age" class="form-select">
+                                    <option value="below60" selected>Below 60</option>
+                                    <option value="60plus">60 and Above</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
         
-            <button class="calc-btn" onclick="calculate()">开始计算</button>
+                    <!-- 3. SOCSO & EIS -->
+                    <div class="group-header">🛡️ SOCSO & EIS</div>
+                    <div class="group-body">
+                        <div class="form-grid">
+                            <div class="form-row">
+                                <label class="label">SOCSO Category</label>
+                                <select id="socso_cat" class="form-select">
+                                    <option value="1" selected>Category 1 (Injury & Invalidity)</option>
+                                    <option value="2">Category 2 (Injury Only)</option>
+                                    <option value="0">None</option>
+                                </select>
+                            </div>
+                            <div class="form-row">
+                                <label class="label">EIS Contribution</label>
+                                <select id="eis_status" class="form-select">
+                                    <option value="1" selected>Yes (Applicable)</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
         
-            <div class="result-area" id="result">
-                <div class="result-row">
-                    <span>月薪总额</span>
-                    <span class="amount" id="r-salary">0.00</span>
+                    <!-- 4. PCB -->
+                    <div class="group-header">🧾 PCB (Tax Deduction)</div>
+                    <div class="group-body">
+                        <div class="form-grid">
+                            <div class="form-row">
+                                <label class="label">PCB Year</label>
+                                <select id="pcb_year" class="form-select">
+                                    <option value="2026" selected>2026</option>
+                                    <option value="2025">2025</option>
+                                    <option value="2024">2024</option>
+                                    <option value="2023">2023</option>
+                                </select>
+                            </div>
+                            <div class="form-row">
+                                <label class="label">Calculate For</label>
+                                <select id="calculate_for" class="form-select">
+                                    <option value="salary_and_bonus" selected>Salary + Bonus</option>
+                                    <option value="bonus_only">Bonus Only</option>
+                                </select>
+                            </div>
+                        </div>
+        
+                        <div class="form-row">
+                            <label class="label">Resident Status</label>
+                            <select id="residency" class="form-select" onchange="toggleResident()">
+                                <option value="resident" selected>Resident</option>
+                                <option value="non-resident">Non-Resident (Flat 30%)</option>
+                            </select>
+                        </div>
+        
+                        <div id="resident_options">
+                            <div class="form-grid">
+                                <div class="form-row">
+                                    <label class="label">Marital Status</label>
+                                    <select id="marital" class="form-select">
+                                        <option value="single">Single / Spouse Working</option>
+                                        <option value="married">Married (Spouse Not Working)</option>
+                                    </select>
+                                </div>
+                                <div class="form-row">
+                                    <label class="label">Disabled Individual</label>
+                                    <select id="disabled" class="form-select">
+                                        <option value="none">No</option>
+                                        <option value="self">Yes (Self)</option>
+                                        <option value="spouse">Yes (Spouse)</option>
+                                        <option value="both">Yes (Both)</option>
+                                    </select>
+                                </div>
+                            </div>
+        
+                            <label class="label" style="margin-top:10px;border-top:1px dashed #eee;padding-top:10px;">Children Relief (Quantity)</label>
+                            <div class="form-grid">
+                                <div class="form-row"><span class="sub-label" style="font-size:11px; color:#94a3b8">Below 18</span><input type="number" id="child_u18" class="form-input" placeholder="0"></div>
+                                <div class="form-row"><span class="sub-label" style="font-size:11px; color:#94a3b8">18+ (Diploma)</span><input type="number" id="child_dip" class="form-input" placeholder="0"></div>
+                                <div class="form-row"><span class="sub-label" style="font-size:11px; color:#94a3b8">18+ (Degree)</span><input type="number" id="child_deg" class="form-input" placeholder="0"></div>
+                                <div class="form-row"><span class="sub-label" style="font-size:11px; color:#94a3b8">Disabled Child</span><input type="number" id="child_dis" class="form-input" placeholder="0"></div>
+                            </div>
+                            
+                            <div class="form-row" style="margin-top:10px;">
+                                <label class="label">Total Tax Reliefs (Zakat etc)</label>
+                                <div class="input-group"><span class="prefix">RM</span><input type="number" id="total_relief" class="form-input" placeholder="0"></div>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <button class="calc-btn" onclick="calculate()">CALCULATE</button>
                 </div>
-                <div class="result-row">
-                    <span>(-) EPF 公积金</span>
-                    <span class="amount red" id="r-epf">0.00</span>
-                </div>
-                <div class="result-row">
-                    <span>(-) SOCSO 社险</span>
-                    <span class="amount red" id="r-socso">0.00</span>
-                </div>
-                <div class="result-row">
-                    <span>(-) EIS 就业险</span>
-                    <span class="amount red" id="r-eis">0.00</span>
-                </div>
-                <div class="result-row">
-                    <span>(-) PCB 预扣税 (估算)</span>
-                    <span class="amount red" id="r-pcb">0.00</span>
-                </div>
-                
-                <div class="result-row highlight">
-                    <span>💰 净到手工资 (Net Pay)</span>
-                    <span class="amount green" id="r-net">0.00</span>
+        
+                <!-- 右侧输出 -->
+                <div class="result-panel">
+                    <div class="res-header">
+                        <div class="net-label">NET PAY</div>
+                        <div class="net-value" id="res_net">RM 0.00</div>
+                    </div>
+        
+                    <table class="res-table">
+                        <thead><tr><th>ITEM</th><th style="text-align:right">EMPLOYEE</th><th style="text-align:right">EMPLOYER</th></tr></thead>
+                        <tbody>
+                            <tr><td>PCB (Tax)</td><td class="val text-red" id="res_pcb">0.00</td><td class="val">-</td></tr>
+                            <tr><td>EPF</td><td class="val text-red" id="res_epf_emp">0.00</td><td class="val" id="res_epf_boss">0.00</td></tr>
+                            <tr><td>SOCSO</td><td class="val text-red" id="res_socso_emp">0.00</td><td class="val" id="res_socso_boss">0.00</td></tr>
+                            <tr><td>EIS</td><td class="val text-red" id="res_eis_emp">0.00</td><td class="val" id="res_eis_boss">0.00</td></tr>
+                            <tr style="border-top:1px solid rgba(255,255,255,0.3);"><td style="padding-top:10px;"><strong>TOTAL</strong></td><td class="val" style="padding-top:10px;" id="res_deduct">0.00</td><td class="val" style="padding-top:10px;" id="res_boss_add">0.00</td></tr>
+                        </tbody>
+                    </table>
+                    
+                    <div style="margin-top:20px; text-align:center; font-size:13px; color:#cbd5e1;">
+                        EMPLOYER COST: <strong id="res_total_cost" style="color:#fff; font-size:16px;">RM 0.00</strong>
+                    </div>
                 </div>
             </div>
-            
-            <p style="font-size:12px; color:#999; margin-top:20px; text-align:center;">
-                * 注：此计算仅供参考。实际 PCB 会根据婚姻状况、子女数量浮动。<br>SOCSO/EIS 依据官方上限封顶计算。
-            </p>
         </div>
         
-        <!-- 底部 SEO 内容 -->
-        <div style="max-width:600px; margin:0 auto 40px; color:#444; line-height:1.7;">
-            
+        <!-- SEO Content -->
+        <div style="max-width:1100px; margin: 40px auto; color:#444; line-height:1.7;">
+            <p><em>注：本计算器已更新至&#160;</em><em><strong>2025/2026 LHDN 最新税率</strong></em><em>，并包含 PERKESO (SOCSO) 薪资上限调整至 RM6,000 的最新算法。</em></p>
+            <h2>&#128161; 为什么这个计算器比别人的准？</h2>
+            <p>很多简易版工资计算器只扣除基础的 RM9,000 免税额，导致计算出的 PCB（预扣税）偏高。
+            <strong><a href="http://0060.my/">0060.my</a></strong><strong> 精算版计算器</strong> 完整集成了 <strong>LHDN 2025 税务减免清单</strong>，帮您把每一分合法的钱都算回来。</p>
+            <h3>&#128202; 核心支持的减免项 (Tax Reliefs)：</h3>
+            <ol>
+            <li><strong>Lifestyle (生活方式)：</strong> 每年 RM2,500 额度，包含购书、宽带费、健身房会员、购买手机/电脑。</li>
+            <li><strong>Tech (科技设备)：</strong> 额外 RM2,500 用于购买个人电脑、平板或手机。</li>
+            <li><strong>Sport (运动)：</strong> 额外 RM500 用于购买运动装备或比赛报名费。</li>
+            <li><strong>Medical (医疗)：</strong> 父母医疗费 (RM8,000) 及 自身严重疾病 (RM10,000)。</li>
+            <li><strong>子女减免：</strong> 未满18岁 (RM2,000/人) 及 高等教育 (RM8,000/人)。</li>
+            </ol>
+            <blockquote><strong>&#128221; 什么是 PCB (Potongan Cukai Berjadual)？</strong>
+            它是雇主每月从您薪水中预扣的所得税。
+            如果您的 PCB 扣多了（因为您有很多减免项没报给 HR），您可以在次年 3-4 月通过 <strong>e-Filing</strong> 进行报税，LHDN 会将多扣的税款<strong>退还 (Tax Refund)</strong> 给您。</blockquote>
+        
         </div>
         
         <script>
+            const v = (id) => parseFloat(document.getElementById(id).value) || 0;
+            const fmt = (n) => n.toLocaleString('en-MY', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            const roundUpRinggit = (n) => Math.ceil((n || 0) - 1e-12);
+            const clamp0 = (n) => Math.max(0, n || 0);
+        
+            const SOCSO_CAT1_TABLE = [
+                { max: 30, emp: 0.10, boss: 0.40 },
+                { max: 50, emp: 0.20, boss: 0.70 },
+                { max: 70, emp: 0.30, boss: 1.10 },
+                { max: 100, emp: 0.40, boss: 1.50 },
+                { max: 140, emp: 0.60, boss: 2.10 },
+                { max: 200, emp: 0.85, boss: 2.95 },
+                { max: 300, emp: 1.25, boss: 4.35 },
+                { max: 400, emp: 1.75, boss: 6.15 },
+                { max: 500, emp: 2.25, boss: 7.85 },
+                { max: 600, emp: 2.75, boss: 9.65 },
+                { max: 700, emp: 3.25, boss: 11.35 },
+                { max: 800, emp: 3.75, boss: 13.15 },
+                { max: 900, emp: 4.25, boss: 14.85 },
+                { max: 1000, emp: 4.75, boss: 16.65 },
+                { max: 1100, emp: 5.25, boss: 18.35 },
+                { max: 1200, emp: 5.75, boss: 20.15 },
+                { max: 1300, emp: 6.25, boss: 21.85 },
+                { max: 1400, emp: 6.75, boss: 23.65 },
+                { max: 1500, emp: 7.25, boss: 25.35 },
+                { max: 1600, emp: 7.75, boss: 27.15 },
+                { max: 1700, emp: 8.25, boss: 28.85 },
+                { max: 1800, emp: 8.75, boss: 30.65 },
+                { max: 1900, emp: 9.25, boss: 32.35 },
+                { max: 2000, emp: 9.75, boss: 34.15 },
+                { max: 2100, emp: 10.25, boss: 35.85 },
+                { max: 2200, emp: 10.75, boss: 37.65 },
+                { max: 2300, emp: 11.25, boss: 39.35 },
+                { max: 2400, emp: 11.75, boss: 41.15 },
+                { max: 2500, emp: 12.25, boss: 42.85 },
+                { max: 2600, emp: 12.75, boss: 44.65 },
+                { max: 2700, emp: 13.25, boss: 46.35 },
+                { max: 2800, emp: 13.75, boss: 48.15 },
+                { max: 2900, emp: 14.25, boss: 49.85 },
+                { max: 3000, emp: 14.75, boss: 51.65 },
+                { max: 3100, emp: 15.25, boss: 53.35 },
+                { max: 3200, emp: 15.75, boss: 55.15 },
+                { max: 3300, emp: 16.25, boss: 56.85 },
+                { max: 3400, emp: 16.75, boss: 58.65 },
+                { max: 3500, emp: 17.25, boss: 60.35 },
+                { max: 3600, emp: 17.75, boss: 62.15 },
+                { max: 3700, emp: 18.25, boss: 63.85 },
+                { max: 3800, emp: 18.75, boss: 65.65 },
+                { max: 3900, emp: 19.25, boss: 67.35 },
+                { max: 4000, emp: 19.75, boss: 69.15 },
+                { max: 4100, emp: 20.25, boss: 70.85 },
+                { max: 4200, emp: 20.75, boss: 72.65 },
+                { max: 4300, emp: 21.25, boss: 74.35 },
+                { max: 4400, emp: 21.75, boss: 76.15 },
+                { max: 4500, emp: 22.25, boss: 77.85 },
+                { max: 4600, emp: 22.75, boss: 79.65 },
+                { max: 4700, emp: 23.25, boss: 81.35 },
+                { max: 4800, emp: 23.75, boss: 83.15 },
+                { max: 4900, emp: 24.25, boss: 84.85 },
+                { max: 5000, emp: 24.75, boss: 86.65 },
+                { max: 5100, emp: 25.25, boss: 88.35 },
+                { max: 5200, emp: 25.75, boss: 90.15 },
+                { max: 5300, emp: 26.25, boss: 91.85 },
+                { max: 5400, emp: 26.75, boss: 93.65 },
+                { max: 5500, emp: 27.25, boss: 95.35 },
+                { max: 5600, emp: 27.75, boss: 97.15 },
+                { max: 5700, emp: 28.25, boss: 98.85 },
+                { max: 5800, emp: 28.75, boss: 100.65 },
+                { max: 5900, emp: 29.25, boss: 102.35 },
+                { max: 6000, emp: 29.75, boss: 104.15 }
+            ];
+        
+            const SOCSO_CAT2_TABLE = [
+                { max: 30, boss: 0.30 },
+                { max: 50, boss: 0.50 },
+                { max: 70, boss: 0.80 },
+                { max: 100, boss: 1.10 },
+                { max: 140, boss: 1.50 },
+                { max: 200, boss: 2.10 },
+                { max: 300, boss: 3.10 },
+                { max: 400, boss: 4.40 },
+                { max: 500, boss: 5.60 },
+                { max: 600, boss: 6.90 },
+                { max: 700, boss: 8.10 },
+                { max: 800, boss: 9.40 },
+                { max: 900, boss: 10.60 },
+                { max: 1000, boss: 11.90 },
+                { max: 1100, boss: 13.10 },
+                { max: 1200, boss: 14.40 },
+                { max: 1300, boss: 15.60 },
+                { max: 1400, boss: 16.90 },
+                { max: 1500, boss: 18.10 },
+                { max: 1600, boss: 19.40 },
+                { max: 1700, boss: 20.60 },
+                { max: 1800, boss: 21.90 },
+                { max: 1900, boss: 23.10 },
+                { max: 2000, boss: 24.40 },
+                { max: 2100, boss: 25.60 },
+                { max: 2200, boss: 26.90 },
+                { max: 2300, boss: 28.10 },
+                { max: 2400, boss: 29.40 },
+                { max: 2500, boss: 30.60 },
+                { max: 2600, boss: 31.90 },
+                { max: 2700, boss: 33.10 },
+                { max: 2800, boss: 34.40 },
+                { max: 2900, boss: 35.60 },
+                { max: 3000, boss: 36.90 },
+                { max: 3100, boss: 38.10 },
+                { max: 3200, boss: 39.40 },
+                { max: 3300, boss: 40.60 },
+                { max: 3400, boss: 41.90 },
+                { max: 3500, boss: 43.10 },
+                { max: 3600, boss: 44.40 },
+                { max: 3700, boss: 45.60 },
+                { max: 3800, boss: 46.90 },
+                { max: 3900, boss: 48.10 },
+                { max: 4000, boss: 49.40 },
+                { max: 4100, boss: 50.60 },
+                { max: 4200, boss: 51.90 },
+                { max: 4300, boss: 53.10 },
+                { max: 4400, boss: 54.40 },
+                { max: 4500, boss: 55.60 },
+                { max: 4600, boss: 56.90 },
+                { max: 4700, boss: 58.10 },
+                { max: 4800, boss: 59.40 },
+                { max: 4900, boss: 60.60 },
+                { max: 5000, boss: 61.90 },
+                { max: 5100, boss: 63.10 },
+                { max: 5200, boss: 64.40 },
+                { max: 5300, boss: 65.60 },
+                { max: 5400, boss: 66.90 },
+                { max: 5500, boss: 68.10 },
+                { max: 5600, boss: 69.40 },
+                { max: 5700, boss: 70.60 },
+                { max: 5800, boss: 71.90 },
+                { max: 5900, boss: 73.10 },
+                { max: 6000, boss: 74.40 }
+            ];
+        
+            const EIS_TABLE = [
+                { max: 30, emp: 0.05, boss: 0.05 },
+                { max: 50, emp: 0.10, boss: 0.10 },
+                { max: 70, emp: 0.15, boss: 0.15 },
+                { max: 100, emp: 0.20, boss: 0.20 },
+                { max: 140, emp: 0.25, boss: 0.25 },
+                { max: 200, emp: 0.35, boss: 0.35 },
+                { max: 300, emp: 0.50, boss: 0.50 },
+                { max: 400, emp: 0.70, boss: 0.70 },
+                { max: 500, emp: 0.90, boss: 0.90 },
+                { max: 600, emp: 1.10, boss: 1.10 },
+                { max: 700, emp: 1.30, boss: 1.30 },
+                { max: 800, emp: 1.50, boss: 1.50 },
+                { max: 900, emp: 1.70, boss: 1.70 },
+                { max: 1000, emp: 1.90, boss: 1.90 },
+                { max: 1100, emp: 2.10, boss: 2.10 },
+                { max: 1200, emp: 2.30, boss: 2.30 },
+                { max: 1300, emp: 2.50, boss: 2.50 },
+                { max: 1400, emp: 2.70, boss: 2.70 },
+                { max: 1500, emp: 2.90, boss: 2.90 },
+                { max: 1600, emp: 3.10, boss: 3.10 },
+                { max: 1700, emp: 3.30, boss: 3.30 },
+                { max: 1800, emp: 3.50, boss: 3.50 },
+                { max: 1900, emp: 3.70, boss: 3.70 },
+                { max: 2000, emp: 3.90, boss: 3.90 },
+                { max: 2100, emp: 4.10, boss: 4.10 },
+                { max: 2200, emp: 4.30, boss: 4.30 },
+                { max: 2300, emp: 4.50, boss: 4.50 },
+                { max: 2400, emp: 4.70, boss: 4.70 },
+                { max: 2500, emp: 4.90, boss: 4.90 },
+                { max: 2600, emp: 5.10, boss: 5.10 },
+                { max: 2700, emp: 5.30, boss: 5.30 },
+                { max: 2800, emp: 5.50, boss: 5.50 },
+                { max: 2900, emp: 5.70, boss: 5.70 },
+                { max: 3000, emp: 5.90, boss: 5.90 },
+                { max: 3100, emp: 6.10, boss: 6.10 },
+                { max: 3200, emp: 6.30, boss: 6.30 },
+                { max: 3300, emp: 6.50, boss: 6.50 },
+                { max: 3400, emp: 6.70, boss: 6.70 },
+                { max: 3500, emp: 6.90, boss: 6.90 },
+                { max: 3600, emp: 7.10, boss: 7.10 },
+                { max: 3700, emp: 7.30, boss: 7.30 },
+                { max: 3800, emp: 7.50, boss: 7.50 },
+                { max: 3900, emp: 7.70, boss: 7.70 },
+                { max: 4000, emp: 7.90, boss: 7.90 },
+                { max: 4100, emp: 8.10, boss: 8.10 },
+                { max: 4200, emp: 8.30, boss: 8.30 },
+                { max: 4300, emp: 8.50, boss: 8.50 },
+                { max: 4400, emp: 8.70, boss: 8.70 },
+                { max: 4500, emp: 8.90, boss: 8.90 },
+                { max: 4600, emp: 9.10, boss: 9.10 },
+                { max: 4700, emp: 9.30, boss: 9.30 },
+                { max: 4800, emp: 9.50, boss: 9.50 },
+                { max: 4900, emp: 9.70, boss: 9.70 },
+                { max: 5000, emp: 9.90, boss: 9.90 },
+                { max: 5100, emp: 10.10, boss: 10.10 },
+                { max: 5200, emp: 10.30, boss: 10.30 },
+                { max: 5300, emp: 10.50, boss: 10.50 },
+                { max: 5400, emp: 10.70, boss: 10.70 },
+                { max: 5500, emp: 10.90, boss: 10.90 },
+                { max: 5600, emp: 11.10, boss: 11.10 },
+                { max: 5700, emp: 11.30, boss: 11.30 },
+                { max: 5800, emp: 11.50, boss: 11.50 },
+                { max: 5900, emp: 11.70, boss: 11.70 },
+                { max: 6000, emp: 11.90, boss: 11.90 }
+            ];
+        
+            const findByWage = (wage, table) => {
+                const w = Math.min(Math.max(wage || 0, 0), 6000);
+                for (const row of table) {
+                    if (w <= row.max) return row;
+                }
+                return table[table.length - 1];
+            };
+        
+            const TAX_BRACKETS_PAYROLLMY_PCB_TABLE_2018 = [
+                { l: 5000, r: 0 },
+                { l: 20000, r: 0.01 },
+                { l: 35000, r: 0.03 },
+                { l: 50000, r: 0.08 },
+                { l: 70000, r: 0.14 },
+                { l: 100000, r: 0.21 },
+                { l: 250000, r: 0.24 },
+                { l: 400000, r: 0.245 },
+                { l: 600000, r: 0.25 },
+                { l: 1000000, r: 0.26 },
+                { l: 2000000, r: 0.28 },
+                { l: 9999999999, r: 0.30 }
+            ];
+        
+            const getTaxBrackets = (year) => {
+                return TAX_BRACKETS_PAYROLLMY_PCB_TABLE_2018;
+            };
+        
+            const computeAnnualTax = (annualChargeable, brackets) => {
+                let temp = clamp0(annualChargeable);
+                let taxYear = 0;
+                let prev = 0;
+                for (const b of brackets) {
+                    const width = b.l - prev;
+                    if (temp <= 0) break;
+                    const part = Math.min(temp, width);
+                    taxYear += part * b.r;
+                    temp -= part;
+                    prev = b.l;
+                }
+                return taxYear;
+            };
+        
+            const computeResidentTaxBreakdown = ({ annualIncome, annualRelief, brackets }) => {
+                const annualTaxable = clamp0(annualIncome - annualRelief);
+                const annualTax = computeAnnualTax(annualTaxable, brackets);
+                return { annualTaxable, annualTax };
+            };
+            
+            function toggleResident() {
+                const isRes = document.getElementById('residency').value === 'resident';
+                document.getElementById('resident_options').style.display = isRes ? 'block' : 'none';
+            }
+        
             function calculate() {
-                const salary = parseFloat(document.getElementById('salary').value) || 0;
-                const residency = document.getElementById('residency').value;
-                const epfRate = parseFloat(document.getElementById('epf-rate').value);
+                // 1. 收入项
+                const wages = v('wages');
+                const allowance = v('allowance');
+                const overtime = v('overtime');
+                const commission = v('commission');
+                const bonus = v('bonus');
+                
+                const grossCash = wages + allowance + overtime + commission + bonus;
+                const epfWage = wages + allowance + commission + bonus;
+                const socsoWage = wages + allowance + overtime + commission;
+                
+                // PCB 基数
+                const pcbBase = grossCash + v('bik');
         
-                // 1. 计算 EPF
-                let epf = salary * epfRate;
+                // 2. EPF (payroll.my 对齐：不包含 OT；金额进位到整 RM)
+                let epf_emp = 0;
+                let epf_boss = 0;
+                const epfActive = document.getElementById('epf_status').value === '1';
+                if (epfActive && epfWage > 0) {
+                    const age = document.getElementById('epf_age').value;
+                    const isBelow60 = age === 'below60';
+                    const empRate = isBelow60 ? 0.11 : 0.055;
+                    const bossRate = isBelow60 ? (epfWage <= 5000 ? 0.13 : 0.12) : (epfWage <= 5000 ? 0.065 : 0.06);
+                    epf_emp = roundUpRinggit(epfWage * empRate);
+                    epf_boss = roundUpRinggit(epfWage * bossRate);
+                }
         
-                // 2. 计算 SOCSO (简化版，实际是查表，这里取近似上限)
-                // 2024年新规：薪资上限提升至 RM6000
-                let socso_wage = Math.min(salary, 6000);
-                let socso = socso_wage * 0.005; // 约 0.5%
-                if (salary > 5000) socso = 29.65; // 近似封顶值
+                // 3. SOCSO & EIS (payroll.my 对齐：按表格取值，cap RM6000)
+                let socso_emp=0, socso_boss=0, eis_emp=0, eis_boss=0;
+                const socsoCat = document.getElementById('socso_cat').value;
+                const eisActive = document.getElementById('eis_status').value === '1';
         
-                // 3. 计算 EIS (约 0.2%, 封顶 RM6000)
-                let eis_wage = Math.min(salary, 6000);
-                let eis = eis_wage * 0.002;
-                if (salary > 5900) eis = 11.90; // 封顶
+                if (socsoWage > 0) {
+                    if (socsoCat === '1') {
+                        const row = findByWage(socsoWage, SOCSO_CAT1_TABLE);
+                        socso_emp = row.emp;
+                        socso_boss = row.boss;
+                    } else if (socsoCat === '2') {
+                        const row = findByWage(socsoWage, SOCSO_CAT2_TABLE);
+                        socso_emp = 0;
+                        socso_boss = row.boss;
+                    }
         
-                // 4. 计算 PCB (Tax)
-                let taxableIncome = salary - epf; // EPF可以扣税 (有限额，这里简化)
+                    if (eisActive) {
+                        const row = findByWage(socsoWage, EIS_TABLE);
+                        eis_emp = row.emp;
+                        eis_boss = row.boss;
+                    }
+                }
+        
+                // 4. PCB 计算 (payroll.my 对齐：月 PCB = 年税/12；bonus-only = 年税差额)
                 let pcb = 0;
+                const residency = document.getElementById('residency').value;
+                const calculateFor = document.getElementById('calculate_for').value;
+                const pcbYear = document.getElementById('pcb_year').value;
+                const brackets = getTaxBrackets(pcbYear);
         
                 if (residency === 'non-resident') {
-                    // 非居民：直接 30%
-                    pcb = taxableIncome * 0.30;
+                    if (calculateFor === 'bonus_only') pcb = bonus * 0.30;
+                    else pcb = (pcbBase - bonus + bonus) * 0.30;
                 } else {
-                    // 居民：累进税率 (简易估算版，模拟 LHDN 表格)
-                    // 扣除基础免税额 RM9000
-                    let chargeable = taxableIncome * 12 - 9000; 
-                    chargeable = chargeable / 12; // 换回月度
+                    let baseRelief = 9000;
+                    const marital = document.getElementById('marital').value;
+                    const disabled = document.getElementById('disabled').value;
+                    
+                    if (disabled === 'self' || disabled === 'both') baseRelief += 6000;
+                    if (marital === 'married') {
+                        baseRelief += 4000;
+                        if (disabled === 'spouse' || disabled === 'both') baseRelief += 5000;
+                    }
         
-                    if (chargeable <= 5000) pcb = 0;
-                    else if (chargeable <= 20000) pcb = (chargeable - 5000) * 0.01;
-                    else if (chargeable <= 35000) pcb = 150 + (chargeable - 20000) * 0.03;
-                    else if (chargeable <= 50000) pcb = 600 + (chargeable - 35000) * 0.08;
-                    else if (chargeable <= 70000) pcb = 1800 + (chargeable - 50000) * 0.13;
-                    else if (chargeable <= 100000) pcb = 4400 + (chargeable - 70000) * 0.21;
-                    else pcb = chargeable * 0.24; // 高薪简化
+                    baseRelief += (v('child_u18') * 2000) + (v('child_dip') * 2000) + (v('child_deg') * 8000) + (v('child_dis') * 6000);
+                    baseRelief += v('total_relief');
+        
+                    const isEpfActive = document.getElementById('epf_status').value === '1';
+                    const age = document.getElementById('epf_age').value;
+                    const isBelow60 = age === 'below60';
+                    const empEpfRate = isBelow60 ? 0.11 : 0.055;
+                    const epfWageRecurring = wages + allowance + commission;
+                    const epfEmpRecurring = (isEpfActive && epfWageRecurring > 0) ? roundUpRinggit(epfWageRecurring * empEpfRate) : 0;
+                    const epfEmpBonus = (isEpfActive && bonus > 0) ? roundUpRinggit(bonus * empEpfRate) : 0;
+        
+                    const epfReliefSalary = Math.min(epfEmpRecurring * 12, 4000);
+                    const epfReliefWithBonus = Math.min(epfEmpRecurring * 12 + epfEmpBonus, 4000);
+        
+                    const pcbSalaryMonthlyTaxable = (wages + allowance + overtime + commission) + v('bik');
+        
+                    const annualIncomeSalary = pcbSalaryMonthlyTaxable * 12;
+                    const annualIncomeWithBonus = annualIncomeSalary + bonus;
+        
+                    const salaryTax = computeResidentTaxBreakdown({ annualIncome: annualIncomeSalary, annualRelief: baseRelief + epfReliefSalary, brackets });
+                    const withBonusTax = computeResidentTaxBreakdown({ annualIncome: annualIncomeWithBonus, annualRelief: baseRelief + epfReliefWithBonus, brackets });
+        
+                    const pcbSalaryMonthly = salaryTax.annualTax / 12;
+                    const pcbBonusExtra = clamp0(withBonusTax.annualTax - salaryTax.annualTax);
+        
+                    if (calculateFor === 'bonus_only') pcb = pcbBonusExtra;
+                    else pcb = pcbSalaryMonthly + pcbBonusExtra;
                 }
-                
-                // 修正负数
-                if (pcb < 0) pcb = 0;
         
-                // 5. 结果
-                const net = salary - epf - socso - eis - pcb;
+                const totalDeduct = epf_emp + socso_emp + eis_emp + pcb;
+                const netPay = grossCash - totalDeduct;
+                const totalCost = grossCash + epf_boss + socso_boss + eis_boss;
         
-                // 渲染
-                document.getElementById('r-salary').innerText = salary.toFixed(2);
-                document.getElementById('r-epf').innerText = epf.toFixed(2);
-                document.getElementById('r-socso').innerText = socso.toFixed(2);
-                document.getElementById('r-eis').innerText = eis.toFixed(2);
-                document.getElementById('r-pcb').innerText = pcb.toFixed(2);
-                document.getElementById('r-net').innerText = net.toFixed(2);
-        
-                document.getElementById('result').style.display = 'block';
+                document.getElementById('res_net').innerText = 'RM ' + fmt(netPay);
+                document.getElementById('res_pcb').innerText = fmt(pcb);
+                document.getElementById('res_epf_emp').innerText = fmt(epf_emp);
+                document.getElementById('res_socso_emp').innerText = fmt(socso_emp);
+                document.getElementById('res_eis_emp').innerText = fmt(eis_emp);
+                document.getElementById('res_epf_boss').innerText = fmt(epf_boss);
+                document.getElementById('res_socso_boss').innerText = fmt(socso_boss);
+                document.getElementById('res_eis_boss').innerText = fmt(eis_boss);
+                document.getElementById('res_deduct').innerText = fmt(totalDeduct);
+                document.getElementById('res_boss_add').innerText = fmt(epf_boss + socso_boss + eis_boss);
+                document.getElementById('res_total_cost').innerText = 'RM ' + fmt(totalCost);
             }
         </script>
+
     </main>
 
     <!-- 底部 -->
